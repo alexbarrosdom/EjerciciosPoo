@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Ejercicio2 {
     public static void main(String[] args) {
-        Integer anho;
+        int anho;
         System.out.println("Escriba un ano");
         Scanner teclado = new Scanner(System.in);
         anho = teclado.nextInt();
