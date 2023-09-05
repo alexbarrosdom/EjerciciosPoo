@@ -10,12 +10,12 @@ public class Ejercicio2 {
         anho = teclado.nextInt();
         if(anho % 4 == 0){
                 if(anho % 100 == 0 && anho % 400 != 0){
-                    System.out.println("O ano " + anho + " non é un ano bisiesto");
+                    System.out.println("O ano " + anho + " non é bisiesto");
                 }else{
-                    System.out.println("O ano " + anho + " é un ano bisiesto");
+                    System.out.println("O ano " + anho + " é bisiesto");
                 }
         }else{
-            System.out.println("O ano " + anho + " non é un ano bisiesto");
+            System.out.println("O ano " + anho + " non é bisiesto");
         }
     }
 }
