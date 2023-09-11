@@ -1,5 +1,7 @@
 package com.campusdual.ejercicio4;
 
+import com.campusdual.ejemplos.alimentos.Food;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,38 +23,124 @@ La clase dieta tiene que tener las siguientes funcionalidades:
 	-getTotalCalories(): devuelve el total de calorías
 	-getTotalCarbs(): devuelve el total de carbohidratos
 	-getTotalFats(): devuelve el total de grasas
-	-getTotalProteins(): devuelve el total de proteinas
+	-getTotalProteins(): devuelve el total de proteínas
 *
 * */
 public class Diet {
+
+    //atributos da clase Diet:
     private Integer maxCalories;
     private Integer maxCarbs;
     private Integer maxFats;
     private Integer maxProteins;
     private List<Intake> intakes;
 
-    public Diet(){
+    private Boolean woman;
+    private Integer height;
+    private Integer weight;
+
+
+    //Getters e setters:
+    public Integer getMaxCalories() {
+        return maxCalories;
+    }
+
+    public void setMaxCalories(Integer maxCalories) {
+        this.maxCalories = maxCalories;
+    }
+
+    public Integer getMaxCarbs() {
+        return maxCarbs;
+    }
+
+    public void setMaxCarbs(Integer maxCarbs) {
+        this.maxCarbs = maxCarbs;
+    }
+
+    public Integer getMaxFats() {
+        return maxFats;
+    }
+
+    public void setMaxFats(Integer maxFats) {
+        this.maxFats = maxFats;
+    }
+
+    public Integer getMaxProteins() {
+        return maxProteins;
+    }
+
+    public void setMaxProteins(Integer maxProteins) {
+        this.maxProteins = maxProteins;
+    }
+
+    public List<Intake> getIntakes() {
+        return intakes;
+    }
+
+    public void setIntakes(List<Intake> intakes) {
+        this.intakes = intakes;
+    }
+
+    public Boolean getWoman() {
+        return woman;
+    }
+
+    public void setWoman(Boolean woman) {
+        this.woman = woman;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    //Construtores (tipos de dieta):
+    public Diet(){ //dieta baleira (sen límite de calorías)
         this.intakes = new ArrayList<>();
     }
 
-    public Diet(Integer maxCalories){
+    public Diet(Integer maxCalories){ //dieta cun máximo de calorías
         this.maxCalories=maxCalories;
         this.intakes = new ArrayList<>();
     }
 
-    public Diet(Integer maxFats, Integer maxCarbs, Integer maxProteins){
+    public Diet(Integer maxFats, Integer maxCarbs, Integer maxProteins){ //dieta con máximos
         this.maxCarbs=maxCarbs;
         this.maxFats=maxFats;
         this.maxProteins=maxProteins;
         this.intakes = new ArrayList<>();
     }
 
-    public Diet(Boolean women, Integer age, Integer height, Integer weight){
+    public Diet(Boolean women, Integer age, Integer height, Integer weight){ //dieta en función da taxa metabólica basal
         if(women){
-            maxCalories = (int) ((10*weight) + (6.25*height))-(5*age)-161;
+            maxCalories = (int) ((10*weight) + (6.25*height))-(5*age)-161; //fórmula para calcular o metabolismo basal en mulleres
         }else{
-            maxCalories = (int) ((10*weight) + (6.25*height))-(5*age)+5;
+            maxCalories = (int) ((10*weight) + (6.25*height))-(5*age)+5;  //fórmula para calcular o metabolismo basal en homes
         }
         this.intakes = new ArrayList<>();
     }
+
+    //Métodos:
+    public void addFood(Food comida, Integer gramos){
+        //método que engada un alimento e a súa cantidade en gramos
+
+    }
+
+    public void getTotalCalories(){
+
+    }
+
+
+
 }

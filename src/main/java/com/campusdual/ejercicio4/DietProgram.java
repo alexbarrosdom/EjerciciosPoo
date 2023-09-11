@@ -1,5 +1,7 @@
 package com.campusdual.ejercicio4;
 
+import com.campusdual.ejemplos.alimentos.Food;
+
 import java.util.Scanner;
 
 public class DietProgram {
