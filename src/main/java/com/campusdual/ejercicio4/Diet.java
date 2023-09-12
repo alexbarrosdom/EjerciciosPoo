@@ -138,9 +138,8 @@ public class Diet {
     }
 
     public void getTotalCalories(){
+        //método que calcule o total de calorías da dieta
 
     }
-
-
 
 }
