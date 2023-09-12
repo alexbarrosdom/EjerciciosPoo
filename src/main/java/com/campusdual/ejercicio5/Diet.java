@@ -19,14 +19,14 @@ public class Diet {
 
     public Diet(){
         this.intakes = new ArrayList<>();
-    }
+    } //Dieta baleira (sen máximo de calorías)
 
-    public Diet(Integer maxCalories){
+    public Diet(Integer maxCalories){ //Dieta con máximo de calorías
         this.maxCalories=maxCalories;
         this.intakes = new ArrayList<>();
     }
 
-    public Diet(Integer maxFats, Integer maxCarbs, Integer maxProteins){
+    public Diet(Integer maxFats, Integer maxCarbs, Integer maxProteins){ //Dieta por macronutrientes
         this.maxCarbs=maxCarbs;
         this.maxFats=maxFats;
         this.maxProteins=maxProteins;
