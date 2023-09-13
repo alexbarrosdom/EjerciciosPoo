@@ -10,7 +10,7 @@ public class DietProgram2 {
     Map<String, Diet> dietMap; //Declaración da variable dietMap da clase Map
 
     public DietProgram2() {
-        dietMap = new HashMap<>(); //Instancia da variable dietMap -> creamos un obxecto deste tipo
+        dietMap = new HashMap<>(); //Instancia da variable dietMap: creamos un obxecto deste tipo
     }
 
     public void showMenuProgram(){ //Menú principal, agora coas opcións novas
@@ -54,26 +54,39 @@ public class DietProgram2 {
                 addDiet(); //Método para engadir unha nova dieta
                 break;
             case 2:
-                showDietDetails(); //Método para mostrar os detalles da dieta
+                String selectedDiet = selectDiet(); //obtemos nome do contenedor
+                if(selectedDiet != null){
+                    Diet selected = dietMap.get(selectedDiet); //Aquí estamos obtendo o contenido do map
+                    showDietDetails(selected); //pasamos o contido para mostralo
+                }
+                 //Método para mostrar os detalles da dieta //Non sei por que dá erro, faga o que faga
                 break;
             case 3:
                 deleteDiet(); //Método para eliminar unha dieta
                 break;
-
         }
     }
 
     private String selectDiet(){ //Seleccionar dieta
-        Integer containerNumber = 1; //Empezamos a lista en 1
-        List<String> containerList = new ArrayList<>();
-        for (String containerName: dietMap.keySet()){
-            System.out.println(containerNumber + ": " + containerName);
-            containerList.add(containerName);
-            containerNumber++;
+        if(dietMap.size() == 0){
+            System.out.println("Non hai dietas que amosar");
+            return null;
         }
-        Integer option = Kb.getOption(1, containerNumber);
-        return containerList.get(option-1);  // opcións
-    } //TODO se containerNumber = option -> non escolleu nada, devolver null
+        System.out.println("Seleccione unha dieta: ");
+        Integer containerNumber = 1; //Empezamos a lista en 1
+        List<String> containerList = new ArrayList<>(); //Creamos a lista dos "contenedores"
+        for (String containerName: dietMap.keySet()){ //Facemos un bucle for para recorrer toda a lista
+            System.out.println(containerNumber + ": " + containerName);
+            containerList.add(containerName); //Con cada volta, imos engadindo os nomes dos contenedores á lista
+            containerNumber++; //E imos aumentando o número
+        }
+        System.out.println(containerNumber + ": Cancelar");
+        Integer option = Kb.getOption(1, containerNumber); //Preguntamos a opción que quere
+        if(containerNumber == option){
+            return null;
+        }
+        return containerList.get(option-1);  // Queremos que nos devolva a opción seleccionada, e como os arrays empezan en 0 e as listas en 1, temos que dicirlle que nos devolva a opción -1
+    }
 
 
     private void addDiet(){
@@ -89,23 +102,23 @@ public class DietProgram2 {
         //TODO funcionalidade
         if(diet!=null){
             System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            System.out.println("Detalles de la dieta");
+            System.out.println("Detalles da dieta");
             System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             if(diet.getMaxCalories()!=null){
-                System.out.println("El número máximo de calorías es:"+diet.getMaxCalories());
+                System.out.println("O número máximo de calorías é:"+diet.getMaxCalories());
             }
             if(diet.getMaxCarbs() != null || diet.getMaxFats() != null || diet.getMaxProteins() != null){
-                System.out.println("Los valores máximos de macronutrientes son: Carbohidratos:"+diet.getMaxCarbs()+" , Grasas:"+diet.getMaxFats()+" , Proteinas:"+diet.getMaxProteins());
+                System.out.println("Os valores máximos de macronutrientes son: Carbohidratos:"+diet.getMaxCarbs()+" , Graxas:"+diet.getMaxFats()+" , Proteínas:"+diet.getMaxProteins());
             }
-            System.out.println("Número de alimentos de la dieta:"+diet.getFoodNumber());
+            System.out.println("Número de alimentos da dieta:"+diet.getFoodNumber());
             System.out.println("Calorías:"+diet.getTotalCalories());
             System.out.println("Carbohidratos:"+diet.getTotalCarbs());
-            System.out.println("Grasas:"+diet.getTotalFats());
+            System.out.println("Graxas:"+diet.getTotalFats());
             System.out.println("Proteínas:"+diet.getTotalProteins());
-            System.out.println("Alimentos de la dieta:"+diet.getDietIntakes());
+            System.out.println("Alimentos da dieta:"+diet.getDietIntakes());
         }else{
             System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-            System.out.println("La dieta no esta iniciada");
+            System.out.println("A dieta non está iniciada");
             System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         }
     }
@@ -160,7 +173,7 @@ public class DietProgram2 {
     }
 
     private void deletePatient() {
-        //Elimina los datos de un paciente
+        //Elimina os datos dun paciente
         // (Non borra as súas dietas asignadas, xa que poden estar asignadas a outro paciente)
         //TODO funcionalidade
     }

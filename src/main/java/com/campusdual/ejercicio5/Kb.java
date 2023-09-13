@@ -13,11 +13,11 @@ public class Kb { //Clase para engadir utilidades ao noso programa
                 option = Kb.forceNextInt();
                 notvalid = option<min || option>max;
             }catch (InputMismatchException e){
-                System.out.println("La opción debe ser un número");
+                System.out.println("A opción debe ser un número");
                 Kb.nextLine();
             }
             if(notvalid){
-                System.out.println("Opción no valida, se requiere un número entre "+min+" y "+max);
+                System.out.println("Opción non válida, requírese un número entre "+min+" y "+max);
             }
         }while(notvalid);
         return option;
@@ -42,7 +42,7 @@ public class Kb { //Clase para engadir utilidades ao noso programa
                 resultado = nextInt();
                 notvalid=false;
             } catch (InputMismatchException e) {
-                System.out.println("Es necesario que sea un número");
+                System.out.println("É necesario que sexa un número");
             }
         }while(notvalid);
         return resultado;
