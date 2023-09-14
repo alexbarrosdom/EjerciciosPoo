@@ -11,6 +11,7 @@ public class Diet {
     public static final String MAX_FATS_REBASE = "MAX_FATS_REBASE";
     public static final String MAX_PROTEINS_REBASE = "MAX_PROTEINS_REBASE";
 
+
     private Integer maxCalories;
     private Integer maxCarbs;
     private Integer maxFats;
@@ -64,8 +65,8 @@ public class Diet {
     }
 
     private String isValidIntake(Intake intake){
-        Integer actualCaories = getTotalCalories();
-        if(this.maxCalories != null && this.maxCalories < (actualCaories + intake.calculatedCalories())){
+        Integer actualCalories = getTotalCalories();
+        if(this.maxCalories != null && this.maxCalories < (actualCalories + intake.calculatedCalories())){
             return MAX_CALORIES_REBASE;
         }
         Integer actualCarbs = getTotalCarbs();

@@ -9,6 +9,22 @@ public class DietProgram2 {
 
     Map<String, Diet> dietMap; //Declaración da variable dietMap da clase Map
 
+
+
+    /*private Diet getSelectedDiet(){ //Método que emprega Juanjo para seleccionar unha dieta, empregando unha lista
+        System.out.println("Lista de dietas");
+        for(int i=0; i<dietList.size(); i++){ //Percorre a lista co bucle for
+            System.out.println((i+1) + "-" + dietList.get(i).getName()); //Imprime as opcións e os nomes
+        }
+        System.out.println((dietList.size() + 1) + "-Saír"); //A última opción é saír
+        Integer selected = Kb.getOption(1, dietList.size()+1); //Opcións que podes seleccionar
+        if(selected == dietList.size()+1){
+            return null;
+        }
+        return dietList.get(selected-1); //Se escolle a primeira opción(1) da lista, queremos que nos seleccione o primeiro elemento do array(0)
+    }*/
+
+
     public DietProgram2() {
         dietMap = new HashMap<>(); //Instancia da variable dietMap: creamos un obxecto deste tipo
     }
@@ -58,8 +74,10 @@ public class DietProgram2 {
                 if(selectedDiet != null){
                     Diet selected = dietMap.get(selectedDiet); //Aquí estamos obtendo o contenido do map
                     showDietDetails(selected); //pasamos o contido para mostralo
+                }else{
+                    System.out.println("Operación cancelada");
                 }
-                 //Método para mostrar os detalles da dieta //Non sei por que dá erro, faga o que faga
+                 //Método para mostrar os detalles da dieta
                 break;
             case 3:
                 deleteDiet(); //Método para eliminar unha dieta
@@ -76,7 +94,7 @@ public class DietProgram2 {
         Integer containerNumber = 1; //Empezamos a lista en 1
         List<String> containerList = new ArrayList<>(); //Creamos a lista dos "contenedores"
         for (String containerName: dietMap.keySet()){ //Facemos un bucle for para recorrer toda a lista
-            System.out.println(containerNumber + ": " + containerName);
+            System.out.println(containerNumber + ": " + containerName); //Imprimimos o número e o nome
             containerList.add(containerName); //Con cada volta, imos engadindo os nomes dos contenedores á lista
             containerNumber++; //E imos aumentando o número
         }
@@ -89,8 +107,58 @@ public class DietProgram2 {
     }
 
 
-    private void addDiet(){
-        HashMap<Integer, String> dietList = new HashMap();
+    private void addDiet(Diet diet){
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println("Escolla unha opción:");
+        System.out.println("===================================");
+        System.out.println("1-Dieta sen límite");
+        System.out.println("2-Dieta por calorías");
+        System.out.println("3-Dieta por macronutrientes");
+        System.out.println("4-Dieta por datos personais");
+        Integer option = Kb.getOption(1,4);
+        switch (option){
+            case 1:
+                diet = new Diet();
+                System.out.println("Engadiuse unha dieta sen límites");
+                break;
+            case 2:
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Escriba o número de calorías");
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                Integer calories = Kb.forceNextInt();
+                diet = new Diet(calories);
+                System.out.println("Creouse unha dieta con "+calories+" calorías máximas");
+                break;
+            case 3:
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Escriba os macronutrientes");
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Carbohidratos:");
+                Integer carbs = Kb.forceNextInt();
+                System.out.println("Graxas:");
+                Integer fats = Kb.forceNextInt();
+                System.out.println("Proteínas:");
+                Integer proteins = Kb.forceNextInt();
+                diet = new Diet(fats,carbs,proteins);
+                System.out.println("Creouse unha dieta con Carbohidratos:"+carbs+", Grasas:"+fats+" ,Proteínas:"+proteins);
+                break;
+            case 4:
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Escriba os datos personales do paciente");
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Peso:");
+                Integer weight = Kb.forceNextInt();
+                System.out.println("Altura:");
+                Integer height = Kb.forceNextInt();
+                System.out.println("Idade:");
+                Integer age = Kb.forceNextInt();
+                System.out.println("Muller ou Home(m/h):");
+                String sexCharacter = Kb.nextLine();
+                diet = new Diet("m".equalsIgnoreCase(sexCharacter),age,height,weight);
+                System.out.println("Creouse unha dieta de "+diet.getMaxCalories()+" calorías máximas");
+                break;
+        }
+        //HashMap<Integer, String> dietList = new HashMap();
         //Engade unha dieta á lista.
         //Podemos reutilizar o menú antiguo de crear/reemplazar
         //TODO funcionalidade
@@ -99,7 +167,6 @@ public class DietProgram2 {
 
     private void showDietDetails(Diet diet){
         //Mostra os detalles dunha dieta e permite modificala
-        //TODO funcionalidade
         if(diet!=null){
             System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             System.out.println("Detalles da dieta");
@@ -126,6 +193,16 @@ public class DietProgram2 {
     private void deleteDiet(){
         //Elimina unha dieta da lista(sempre que non a teña asignada un paciente)
         //TODO asegurarse de que non está asignada a ningún paciente + funcionalidade
+        System.out.println("Escolla unha dieta a eliminar");
+        String selected = selectDiet();
+        if(selected == null){
+            System.out.println("Operación cancelada");
+        }else{
+            Diet deletedDiet =dietMap.remove(selected);
+            if(deletedDiet == null){
+                System.out.println("Erro - Non se atopou a dieta");
+            }
+        }
     }
 
     private void patientManager() {
