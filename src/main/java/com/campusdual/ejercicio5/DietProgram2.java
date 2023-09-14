@@ -83,7 +83,7 @@ public class DietProgram2 {
         Integer option = Kb.getOption(1,4);
         switch(option){
             case 1:
-                addDiet(); //Método para engadir unha nova dieta
+                createDiet(); //Método para engadir unha nova dieta
                 break;
             case 2:
                 String selectedDiet = selectDiet(); //obtemos nome do contenedor
@@ -156,7 +156,19 @@ public class DietProgram2 {
     }
 
     private void updateDiet(Diet selectedDiet, String field) {
-
+        System.out.println("Escriba un novo valor");
+        Integer newValue = Kb.forceNextInt();
+        if(MAX_CALORIES.equalsIgnoreCase(field)){
+            selectedDiet.setMaxCalories(newValue);
+        }else if(MAX_CARBS.equalsIgnoreCase(field)){
+            selectedDiet.setMaxCarbs(newValue);
+        }else if(MAX_FATS.equalsIgnoreCase(field)){
+            selectedDiet.setMaxFats(newValue);
+        }else if(MAX_PROTEINS.equalsIgnoreCase(field)){
+            selectedDiet.setMaxProteins(newValue);
+        }else{
+            System.out.println("O campo seleccionado non existe");
+        }
     }
 
     private void addFoodtoDiet(Diet updateDiet) { //método que engade alimentos a unha dieta
@@ -237,8 +249,20 @@ public class DietProgram2 {
 
 
 
-    private void addDiet(Diet diet){
+    private void createDiet(){
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println("Crear dieta");
+        System.out.println("---------------------------------");
+        System.out.println("Escolla un nome para a súa dieta");
+        String dietName = null;
+        boolean dietExists = false;
+        do{
+            dietName = Kb.nextLine();
+            dietExists = dietMap.containsKey(dietName);
+            if(dietExists){
+                System.out.println("O nome da dieta xa existe, por favor escolla outro");
+            }
+        }while(dietExists);
         System.out.println("Escolla unha opción:");
         System.out.println("===================================");
         System.out.println("1-Dieta sen límite");
@@ -248,7 +272,7 @@ public class DietProgram2 {
         Integer option = Kb.getOption(1,4);
         switch (option){
             case 1:
-                diet = new Diet();
+                dietMap.put(dietName, new Diet());
                 System.out.println("Engadiuse unha dieta sen límites");
                 break;
             case 2:
@@ -256,7 +280,7 @@ public class DietProgram2 {
                 System.out.println("Escriba o número de calorías");
                 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 Integer calories = Kb.forceNextInt();
-                diet = new Diet(calories);
+                dietMap.put(dietName, new Diet(calories));
                 System.out.println("Creouse unha dieta con "+calories+" calorías máximas");
                 break;
             case 3:
@@ -269,7 +293,7 @@ public class DietProgram2 {
                 Integer fats = Kb.forceNextInt();
                 System.out.println("Proteínas:");
                 Integer proteins = Kb.forceNextInt();
-                diet = new Diet(fats,carbs,proteins);
+                dietMap.put(dietName, new Diet(fats,carbs,proteins));
                 System.out.println("Creouse unha dieta con Carbohidratos:"+carbs+", Grasas:"+fats+" ,Proteínas:"+proteins);
                 break;
             case 4:
@@ -284,8 +308,9 @@ public class DietProgram2 {
                 Integer age = Kb.forceNextInt();
                 System.out.println("Muller ou Home(m/h):");
                 String sexCharacter = Kb.nextLine();
-                diet = new Diet("m".equalsIgnoreCase(sexCharacter),age,height,weight);
-                System.out.println("Creouse unha dieta de "+diet.getMaxCalories()+" calorías máximas");
+                dietMap.put(dietName, new Diet("m".equalsIgnoreCase(sexCharacter),age,height,weight));
+                //TODO integrar os clientes para non ter que pedir todos os datos outra vez
+                System.out.println("Creouse unha dieta de "+ MAX_CALORIES +" calorías máximas");
                 break;
         }
         //HashMap<Integer, String> dietList = new HashMap();
