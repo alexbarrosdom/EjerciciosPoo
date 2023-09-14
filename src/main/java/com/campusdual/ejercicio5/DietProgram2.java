@@ -1,5 +1,10 @@
 package com.campusdual.ejercicio5;
 
+import com.campusdual.ejercicio5.exceptions.MaxCaloriesReachedException;
+import com.campusdual.ejercicio5.exceptions.MaxCarbsReachedException;
+import com.campusdual.ejercicio5.exceptions.MaxFatsReachedException;
+import com.campusdual.ejercicio5.exceptions.MaxProteinsReachedException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +12,16 @@ import java.util.Map;
 
 public class DietProgram2 {
 
+    //Constantes dos máximos
+
+    public static final String MAX_CALORIES = "maxCalories";
+    public static final String MAX_CARBS = "maxCarbs";
+    public static final String MAX_FATS = "maxFats";
+    public static final String MAX_PROTEINS  = "maxProteins";
+
     Map<String, Diet> dietMap; //Declaración da variable dietMap da clase Map
+
+    private List<Food> foodList;
 
 
 
@@ -26,7 +40,9 @@ public class DietProgram2 {
 
 
     public DietProgram2() {
+
         dietMap = new HashMap<>(); //Instancia da variable dietMap: creamos un obxecto deste tipo
+        foodList = new ArrayList<>(); // Instancia da variable foodList: creamos un obxecto deste tipo
     }
 
     public void showMenuProgram(){ //Menú principal, agora coas opcións novas
@@ -105,6 +121,120 @@ public class DietProgram2 {
         }
         return containerList.get(option-1);  // Queremos que nos devolva a opción seleccionada, e como os arrays empezan en 0 e as listas en 1, temos que dicirlle que nos devolva a opción -1
     }
+    
+    private void modifyDiet(){
+        System.out.println("Escolla unha dieta a modificar");
+        String selected = selectDiet();
+        if(selected == null){
+            System.out.println("Operación cancelada");
+        }else{
+            Diet selectedDiet = dietMap.get(selected);
+            Integer option = null;
+            do{
+                showDietDetails(selectedDiet);
+                System.out.println("1. Cambiar calorías máximas");
+                System.out.println("2. Cambiar carbohidratos máximos");
+                System.out.println("3. Cambiar graxas máximas");
+                System.out.println("4. Cambiar proteínas máximas");
+                System.out.println("5. Engadir alimento");
+                System.out.println("6. Saír");
+                switch(option){
+                    case 1: updateDiet(selectedDiet, MAX_CALORIES);
+                    break;
+                    case 2: updateDiet(selectedDiet, MAX_CARBS);
+                    break;
+                    case 3: updateDiet(selectedDiet, MAX_FATS);
+                    break;
+                    case 4: updateDiet(selectedDiet, MAX_PROTEINS);
+                    break;
+                    case 5: addFoodtoDiet(selectedDiet);
+                    break;
+                   
+                }
+            }while(option != 6);
+        }
+    }
+
+    private void updateDiet(Diet selectedDiet, String field) {
+
+    }
+
+    private void addFoodtoDiet(Diet updateDiet) { //método que engade alimentos a unha dieta
+        if(updateDiet==null){
+            System.out.println("Para agregar alimentos fai falta iniciar unha dieta");
+            return;
+        }
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println("Agregar alimentos á dieta");
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println("Escolla unha opción:");
+        System.out.println("===================================");
+        System.out.println("1-Agregar un novo alimento");
+        System.out.println("2-Agregar un alimento xa existente");
+
+        Integer option = Kb.getOption(1,2);
+        switch (option){
+            case 1:
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Datos de nuevo alimento");
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Nombre del alimento:");
+                String name = Kb.nextLine();
+                System.out.println("Carbohidratos:");
+                Integer carbs = Kb.forceNextInt();
+                System.out.println("Graxas:");
+                Integer fats = Kb.forceNextInt();
+                System.out.println("Proteínas:");
+                Integer proteins = Kb.forceNextInt();
+                System.out.println("Gramos:");
+                Integer grams = Kb.forceNextInt();
+                Food newFood = new Food(name,carbs,fats,proteins);
+                validateAndAddFoodToDiet(updateDiet, newFood,grams);
+                foodList.add(newFood);
+                break;
+            case 2:
+                if(foodList.size()==0){
+                    System.out.println("Para agregar un alimento existente, ten que haber alimentos previos");
+                    return;
+                }
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("Escolla un alimento");
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                Integer i = 1;
+                for(Food food:foodList){
+                    System.out.println(i+"- "+food.getName());
+                    i++;
+                }
+                System.out.println(i+"- Cancelar");
+                Integer element = Kb.getOption(1,i);
+                if(element==i){
+                    System.out.println("Cancelando alimento");
+                    return;
+                }
+                Food storedFood = foodList.get(element-1);
+                System.out.println("indique el número de gramos de "+storedFood.getName());
+                Integer foodGrams = Kb.forceNextInt();
+                validateAndAddFoodToDiet(updateDiet,storedFood,foodGrams);
+                break;
+        }
+    }
+
+    private void validateAndAddFoodToDiet(Diet updateDiet, Food food, Integer grams){
+        try{
+            updateDiet.addFood(food,grams);
+        }catch (MaxCaloriesReachedException ecal){
+            System.out.println("Acadouse o máximo valor de calorías permitido");
+        }catch (MaxCarbsReachedException ecar){
+            System.out.println("Acadouse o máximo valor de carbohidratos permitido");
+        }catch (MaxFatsReachedException efat){
+            System.out.println("Acadouse o máximo valor de graxas permitido");
+        }catch (MaxProteinsReachedException epro){
+            System.out.println("Acadouse o máximo valor de proteínas permitido");
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     private void addDiet(Diet diet){
@@ -144,7 +274,7 @@ public class DietProgram2 {
                 break;
             case 4:
                 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                System.out.println("Escriba os datos personales do paciente");
+                System.out.println("Escriba os datos personais do paciente");
                 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 System.out.println("Peso:");
                 Integer weight = Kb.forceNextInt();
@@ -190,9 +320,10 @@ public class DietProgram2 {
         }
     }
 
+
     private void deleteDiet(){
         //Elimina unha dieta da lista(sempre que non a teña asignada un paciente)
-        //TODO asegurarse de que non está asignada a ningún paciente + funcionalidade
+        //TODO asegurarse de que non está asignada a ningún paciente + funcionalidade (asignedDiet?)
         System.out.println("Escolla unha dieta a eliminar");
         String selected = selectDiet();
         if(selected == null){
@@ -234,6 +365,7 @@ public class DietProgram2 {
 
 
     private void addPatient() {
+        Patient patient = new Patient();
         //atributos: nome, apelidos, peso, altura, idade e sexo.
         //Ten que engadir un paciente novo á lista de pacientes
         //TODO funcionalidade
